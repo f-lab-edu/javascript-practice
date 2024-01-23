@@ -1,6 +1,6 @@
 function deepCopy<T>(target: T): T {
   // 원시 타입, null인 경우
-  if (!(target instanceof Object) || target === null) {
+  if (typeof target !== 'object' || target === null) {
     return target;
   }
 
