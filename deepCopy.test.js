@@ -28,7 +28,7 @@ describe('deepCopy test', () => {
 
   test("Date copy", () => {
     const date = new Date();
-    expect(deepCopy(date)).toBe(date);
+    expect(deepCopy(date)).toStrictEqual(date);
   });
 
   test("Map copy", () => {
@@ -39,7 +39,9 @@ describe('deepCopy test', () => {
 
     const mapCopy = deepCopy(map);
     map.set("test3", [6, 2, 3, 4, 5]);
-    expect(mapCopy.get("test3")).toBe([1, 2, 3, 4, 5]);
+
+    expect(map.get("test3")[0]).toBe(6);
+    expect(mapCopy.get("test3")[0]).toBe(1);
   });
 
   test("Set copy", () => {
@@ -49,15 +51,16 @@ describe('deepCopy test', () => {
     set.add([1, 2, 3, 4, 5]);
 
     const setCopy = deepCopy(set);
-    set.delete([1, 2, 3, 4, 5]);
-
-    expect(setCopy.has([1, 2, 3, 4, 5])).toBe(true);
+    expect(setCopy).not.toBe(set);
+    expect(setCopy).toEqual(set);
   });
 
   test("array copy", () => {
     const array = [1, 2, 3, 4, 5];
     const arrayCopy = deepCopy(array);
     array[0] = 3;
+
+    expect(array[0]).toBe(3);
     expect(arrayCopy[0]).toBe(1);
   });
 
@@ -72,6 +75,8 @@ describe('deepCopy test', () => {
     }
     const objCopy = deepCopy(obj);
     obj.d.e = 4;
+
+    expect(obj.d.e).toBe(4);
     expect(objCopy.d.e).toBe(1);
   });
 });

@@ -4,6 +4,11 @@ function deepCopy<T>(target: T): T {
     return target;
   }
 
+  // Date 타입인 경우
+  if (target instanceof Date) {
+    return new Date(target.getTime()) as T;
+  }
+
   // Map 타입인 경우
   if (target instanceof Map) {
     let mapCopy = new Map();
@@ -27,24 +32,17 @@ function deepCopy<T>(target: T): T {
   }
 
   // 배열 타입인 경우
-  if (Array.isArray(target)) {
-    let arrayCopy = [];
-    for (let t of target) {
-      arrayCopy.push(deepCopy(t));
-    }
-
-    return arrayCopy as T;
-  }
+  if (Array.isArray(target)) return target.map((t) => deepCopy(t)) as T;
 
   // 객체 리터럴 타입인 경우
-  let objCopy = Object.getPrototypeOf(target);
-  for (let target of objCopy) {
-    if(objCopy.hasOwnProperty(target)) {
-      objCopy[target] = deepCopy(objCopy[target]);
+  let objCopy = {} as {[key: string]: any};
+  for (let key in target) {
+    if (target.hasOwnProperty(key)) {
+      objCopy[key] = deepCopy(target[key]);
     }
   }
 
-  return objCopy;
+  return objCopy as T;
 }
 
 export default deepCopy;
