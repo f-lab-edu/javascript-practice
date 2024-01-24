@@ -39,7 +39,7 @@ function deepCopy<T>(target: T): T {
   // 객체 리터럴 타입인 경우
   let objCopy = Object.getPrototypeOf(target);
   for (let target of objCopy) {
-    if(Object.hasOwnProperty(target)) {
+    if(objCopy.hasOwnProperty(target)) {
       objCopy[target] = deepCopy(objCopy[target]);
     }
   }
